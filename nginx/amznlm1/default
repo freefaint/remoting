@@ -1,12 +1,11 @@
 server {
-  listen 80 default_server;
-  listen [::]:80 default_server;
+  listen 80;
 
   root /srv/api/ui;
 
   index index.html index.htm index.nginx-debian.html;
 
-  server_name _;
+  server_name amznlm1.1aauto.inc;
 
   location /api {
     proxy_pass http://localhost:3001;
@@ -38,14 +37,13 @@ server {
 }
 
 server {
-  listen 8080 default_server;
-  listen [::]:8080 default_server;
+  listen 80;
 
   root /srv/api/ui;
 
   index index.html index.htm index.nginx-debian.html;
 
-  server_name _;
+  server_name amznlm1-qa.1aauto.inc;
 
   location /api {
     proxy_pass http://localhost:3002;
