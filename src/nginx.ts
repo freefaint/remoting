@@ -6,7 +6,7 @@ const ssh = new NodeSSH();
 const username = 'atereschenko';
 const password = 'Amazon123';
 
-export const nginx = (host: string) => {
+export const nginx = (host: string, dir: string) => {
   ssh.connect({
     host,
     username,
@@ -17,7 +17,7 @@ export const nginx = (host: string) => {
 
     console.log("Connected to " + host);
 
-    await ssh.putFile(`${__dirname}/../nginx/vit1/default`, '~/default', null).then(function() {
+    await ssh.putFile(`${__dirname}/../nginx/${dir}/default`, '~/default', null).then(function() {
       console.log("The File thing is done");
     });
 

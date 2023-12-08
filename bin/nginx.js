@@ -15,7 +15,7 @@ const ssh = new node_ssh_1.NodeSSH();
 // const host = 'ma1p-vit1';
 const username = 'atereschenko';
 const password = 'Amazon123';
-const nginx = (host) => {
+const nginx = (host, dir) => {
     ssh.connect({
         host,
         username,
@@ -24,7 +24,7 @@ const nginx = (host) => {
         .then((conn) => __awaiter(void 0, void 0, void 0, function* () {
         const options = { stdin: `${password}\n`, execOptions: { pty: true } };
         console.log("Connected to " + host);
-        yield ssh.putFile(`${__dirname}/../nginx/vit1/default`, '~/default', null).then(function () {
+        yield ssh.putFile(`${__dirname}/../nginx/${dir}/default`, '~/default', null).then(function () {
             console.log("The File thing is done");
         });
         yield ssh.exec("sudo", [`mv`, `~/default`, `/etc/nginx/sites-available/default`], options).then(() => {
