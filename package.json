@@ -1,0 +1,24 @@
+{
+  "name": "remoter",
+  "version": "1.0.0",
+  "main": "bin/vit1.js",
+  "license": "MIT",
+  "dependencies": {
+    "node-ssh": "^13.1.0",
+    "nodemon": "^3.0.2",
+    "ssh2": "^1.14.0",
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node-ssh": "^7.0.6",
+    "@types/ssh2": "^1.11.18",
+    "rimraf": "^5.0.5"
+  },
+  "scripts": {
+    "build": "rimraf bin && tsc",
+    "vit1": "node bin/vit1.js",
+    "amznlm1": "node bin/amznlm1.js"
+  }
+}

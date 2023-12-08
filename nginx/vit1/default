@@ -1,0 +1,77 @@
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        
+        root /srv/api/ui/build;
+        
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name _;
+
+        location /api {
+                proxy_pass http://localhost:8080;
+        }
+
+        location /schemas {
+                proxy_pass http://localhost:8080;
+        }
+
+        location /auth {
+                proxy_pass http://localhost:8080;
+        }
+
+        location /registry {
+                root   /srv/api/ui/build;
+                index  index.html index.htm;
+                try_files $uri $uri/ /index.html;
+        }
+
+        location /bulktools {
+                root   /srv/api/ui/build;
+                index  index.html index.htm;
+                try_files $uri $uri/ /index.html;
+        }
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+
+server {
+        listen 8000 default_server;
+        listen [::]:8000 default_server;
+        
+        root /srv/api/ui/build;
+        
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name _;
+
+        location /api {
+                proxy_pass http://localhost:8081;
+        }
+
+        location /schemas {
+                proxy_pass http://localhost:8081;
+        }
+
+        location /auth {
+                proxy_pass http://localhost:8081;
+        }
+
+        location /registry {
+                root   /srv/api/ui/build;
+                index  index.html index.htm;
+                try_files $uri $uri/ /index.html;
+        }
+
+        location /bulktools {
+                root   /srv/api/ui/build;
+                index  index.html index.htm;
+                try_files $uri $uri/ /index.html;
+        }
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
