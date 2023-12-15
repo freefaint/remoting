@@ -1,0 +1,46 @@
+{
+  "projects": {
+    "apiGenerator": {
+      "dir": "../api-generator/",
+      "buildDir": "../api-generator/work",
+      "host": "vit1",
+
+      "profiles": {
+        "qa": {
+          "host": "vit1",
+          "dir": "/srv/api/qa",
+          "name": "Vendor Info",
+
+          "build": [
+            "cp ./configs/projects/api-generator/qa/.env ../api-generatore/.env",
+            "cd ../api-generator && yarn build",
+            "yarn build"
+          ],
+
+          "deploy": [
+            "cd ../api-generator && yarn deploy"
+          ]
+        }
+      }
+    }
+  },
+
+  "hosts": {
+    "vit1": {
+      "hostName": "ma1p-vit1",
+      "credentials": "atereschenko"
+    },
+
+    "amznlm1": {
+      "hostName": "ma1p-amznlm1",
+      "credentials": "atereschenko"
+    }
+  },
+
+  "credentials": {
+    "atereschenko": {
+      "username": "atereschenko",
+      "password": "Amazon123"
+    }
+  }
+}
