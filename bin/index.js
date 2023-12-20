@@ -43,11 +43,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ssh_class_1 = require("./class/ssh.class");
 const host_class_1 = require("./class/host.class");
 const [nodePath, cachePath, command, ...params] = process.argv;
+const hosts = new host_class_1.Hosts();
 const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         return Promise.resolve(`${`${process.cwd()}/project.json`}`).then(s => __importStar(require(s))).then(({ default: config }) => __awaiter(void 0, void 0, void 0, function* () {
             var _a, e_1, _b, _c;
-            const hosts = new host_class_1.Hosts();
             if (!config.profiles || !Object.keys(config.profiles).length) {
                 console.log("Error! Add project profile to config.json!");
                 process.exit(1);
