@@ -40,6 +40,7 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const node_child_process_1 = require("node:child_process");
 const ssh_class_1 = require("./class/ssh.class");
 const host_class_1 = require("./class/host.class");
 const [nodePath, cachePath, command, ...params] = process.argv;
@@ -47,10 +48,62 @@ const hosts = new host_class_1.Hosts();
 const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         return Promise.resolve(`${`${process.cwd()}/project.json`}`).then(s => __importStar(require(s))).then(({ default: config }) => __awaiter(void 0, void 0, void 0, function* () {
-            var _a, e_1, _b, _c;
+            var _a, e_1, _b, _c, _d, e_2, _e, _f;
             if (!config.profiles || !Object.keys(config.profiles).length) {
                 console.log("Error! Add project profile to config.json!");
                 process.exit(1);
+            }
+            if (command === 'build') {
+                console.log(123);
+                const [profile] = params;
+                if (!profile) {
+                    console.log("Specify profile!");
+                    process.exit(1);
+                }
+                console.log(234);
+                const data = config.profiles[profile];
+                if (!data) {
+                    console.log(`Profile ${profile} not found!`);
+                    process.exit(1);
+                }
+                const cmds = data.build;
+                if (!cmds) {
+                    console.log(`Build schema for ${profile} is not specified!`);
+                    process.exit(1);
+                }
+                console.log(345);
+                try {
+                    for (var _g = true, cmds_1 = __asyncValues(cmds), cmds_1_1; cmds_1_1 = yield cmds_1.next(), _a = cmds_1_1.done, !_a; _g = true) {
+                        _c = cmds_1_1.value;
+                        _g = false;
+                        let cmd = _c;
+                        const parts = cmd.split(/\s/);
+                        if (parts[0] !== 'remoting') {
+                            yield new Promise((resolve, reject) => {
+                                console.log(cmd);
+                                (0, node_child_process_1.exec)(cmd, { cwd: process.cwd() }, (exception, stdout, stderr) => {
+                                    console.log(stdout);
+                                    if (exception) {
+                                        reject(stderr);
+                                    }
+                                    else {
+                                        resolve(stderr);
+                                    }
+                                });
+                            });
+                        }
+                        else {
+                            yield shell(...parts.slice(1));
+                        }
+                    }
+                }
+                catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                finally {
+                    try {
+                        if (!_g && !_a && (_b = cmds_1.return)) yield _b.call(cmds_1);
+                    }
+                    finally { if (e_1) throw e_1.error; }
+                }
             }
             if (command === 'deploy') {
                 const [profile] = params;
@@ -68,7 +121,22 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
                     console.log(`Host ${data.host} data not found!`);
                     process.exit(1);
                 }
+                if (!data.path) {
+                    console.log(`Build path for ${profile} not found!`);
+                    process.exit(1);
+                }
+                if (!data.dir) {
+                    console.log(`Remote dir for ${profile} not found!`);
+                    process.exit(1);
+                }
                 const { hostname, username, password } = yield hosts.get(data.host, hostData);
+                const ssh = new ssh_class_1.SSH(hostname, username, password);
+                yield ssh.open();
+                yield ssh.uploadDir({
+                    source: data.path,
+                    target: data.dir,
+                });
+                ssh.close();
             }
             if (command === 'start') {
                 const [profile] = params;
@@ -139,19 +207,36 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
                     process.exit(1);
                 }
                 try {
-                    for (var _d = true, cmds_1 = __asyncValues(cmds), cmds_1_1; cmds_1_1 = yield cmds_1.next(), _a = cmds_1_1.done, !_a; _d = true) {
-                        _c = cmds_1_1.value;
-                        _d = false;
-                        let cmd = _c;
-                        yield shell(...cmd.split(/\s/));
+                    for (var _h = true, cmds_2 = __asyncValues(cmds), cmds_2_1; cmds_2_1 = yield cmds_2.next(), _d = cmds_2_1.done, !_d; _h = true) {
+                        _f = cmds_2_1.value;
+                        _h = false;
+                        let cmd = _f;
+                        const parts = cmd.split(/\s/);
+                        if (parts[0] !== 'remoting') {
+                            yield new Promise((resolve, reject) => {
+                                console.log(cmd);
+                                (0, node_child_process_1.exec)(cmd, { cwd: process.cwd() }, (exception, stdout, stderr) => {
+                                    console.log(stdout);
+                                    if (exception) {
+                                        reject(stderr);
+                                    }
+                                    else {
+                                        resolve(stderr);
+                                    }
+                                });
+                            });
+                        }
+                        else {
+                            yield shell(...parts.slice(1));
+                        }
                     }
                 }
-                catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                catch (e_2_1) { e_2 = { error: e_2_1 }; }
                 finally {
                     try {
-                        if (!_d && !_a && (_b = cmds_1.return)) yield _b.call(cmds_1);
+                        if (!_h && !_d && (_e = cmds_2.return)) yield _e.call(cmds_2);
                     }
-                    finally { if (e_1) throw e_1.error; }
+                    finally { if (e_2) throw e_2.error; }
                 }
             }
         }));

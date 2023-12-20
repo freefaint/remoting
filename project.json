@@ -1,0 +1,33 @@
+{
+  "name": "ui-generator",
+
+  "hosts": {
+    "vit1": {
+      "hostname": "ma1p-vit1",
+      "username": "atereschenko"
+    },
+
+    "amznlm1": {
+      "hostname": "ma1p-amznlm1",
+      "username": "atereschenko"
+    }
+  },
+
+  "profiles": {
+    "qa": {
+      "path": "./bin",
+      "host": "vit1",
+      "dir": "/srv/api/",
+
+      "build": [
+        "echo 123",
+        "yarn",
+        "yarn build"
+      ],
+      
+      "start": [
+        "ls"
+      ]
+    }
+  }
+}

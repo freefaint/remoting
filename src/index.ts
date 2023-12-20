@@ -42,7 +42,11 @@ const shell = async (command: string, ...params: string[]) => {
 
           if (parts[0] !== 'remoting') {
             await new Promise((resolve, reject) => {
+              console.log(cmd);
+
               exec(cmd, { cwd: process.cwd() }, (exception, stdout, stderr) => {
+                console.log(stdout);
+
                 if (exception) {
                   reject(stderr);
                 } else {
@@ -208,7 +212,11 @@ const shell = async (command: string, ...params: string[]) => {
 
           if (parts[0] !== 'remoting') {
             await new Promise((resolve, reject) => {
+              console.log(cmd);
+
               exec(cmd, { cwd: process.cwd() }, (exception, stdout, stderr) => {
+                console.log(stdout);
+
                 if (exception) {
                   reject(stderr);
                 } else {
