@@ -1,13 +1,15 @@
-import { NodeSSH } from "node-ssh";
-import uuid from "uuid";
+import { NodeSSH, SSHExecOptions } from "node-ssh";
+import { v4 } from "uuid";
 
 export class SSH {
   private ssh: NodeSSH;
 
   constructor(private hostname: string, private username: string, private password: string) {
     this.ssh = new NodeSSH();
+  }
 
-    this.ssh.connect({
+  public async open() {
+    return this.ssh.connect({
       host: this.hostname,
       username: this.username,
       password: this.password
@@ -22,7 +24,7 @@ export class SSH {
     target: string,
   }) {
     const options = { stdin: `${this.password}\n`, execOptions: { pty: true } };
-    const rand = uuid.v4();
+    const rand = v4();
   
     console.log(`Connected to ${this.hostname}`);
   
@@ -53,12 +55,19 @@ export class SSH {
     return this;
   }
 
-  public async exec(cmd: string) {
-    const options = { stdin: `${this.password}\n`, execOptions: { pty: true } };
+  public async exec(cmds: string[], opts?: SSHExecOptions) {
+    const options = { ...opts, stdin: `${this.password}\n`, execOptions: { pty: true } } as any;
+    console.log(cmds);
+    for await (let cmd of cmds) {
+      console.log('Run remote: ' + cmd);
 
-    const parts = cmd.split(/\s/);
+      const parts = cmd.split(/\s/);
+      const promise = parts[0] === 'cd' ? this.ssh.exec('cd', parts.slice(1), options) : this.ssh.exec('sudo', parts, options)
 
-    return await this.ssh.exec('sudo', parts, options).then(result => console.log(result));
+      await promise.then(result => console.log(result));
+    }
+    
+    return;
   }
 
   public close() {
