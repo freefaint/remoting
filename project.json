@@ -1,0 +1,36 @@
+{
+  "name": "ui-generator",
+
+  "hosts": {
+    "vit1": {
+      "hostname": "ma1p-vit1"
+    }
+  },
+
+  "profiles": {
+    "qa": {
+      "build": [
+        "yarn",
+        "cp ./config.vit1.json ./src/config.json",
+        "yarn build"
+      ],
+      
+      "deploy": {
+        "path": "./build",
+        "host": "vit1",
+        "dir": "/srv/api/ui/build1/"
+      },
+      
+      "run": [
+
+      ]
+    }
+  },
+
+  "scripts": {
+    "nginx": [
+      "remoting cp ./nginx/default /etc/nginx/sites-available/default",
+      "remoting exec systectl stop nginx"
+    ]
+  }
+}

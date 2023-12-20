@@ -8,6 +8,10 @@ export declare class SSH {
         source: string;
         target: string;
     }): Promise<this>;
+    uploadDir({ source, target, }: {
+        source: string;
+        target: string;
+    }): Promise<this>;
     exec(cmd: string): Promise<void>;
     close(): void;
 }

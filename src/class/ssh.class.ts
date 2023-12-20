@@ -37,14 +37,28 @@ export class SSH {
     return this;
   }
 
+  public async uploadDir({
+    source,
+    target,
+  }: {
+    source: string,
+    target: string,
+  }) {
+    console.log(`Connected to ${this.hostname}`);
+  
+    await this.ssh.putDirectory(source, target, { recursive: true }).then(function() {
+      console.log(`Dir ${source} fynced with ${target} uploaded`);
+    });
+  
+    return this;
+  }
+
   public async exec(cmd: string) {
     const options = { stdin: `${this.password}\n`, execOptions: { pty: true } };
 
     const parts = cmd.split(/\s/);
 
-    return await this.ssh.exec('sudo', parts, options).then(() => {
-      console.log("Nginx restarted");
-    });
+    return await this.ssh.exec('sudo', parts, options).then(result => console.log(result));
   }
 
   public close() {

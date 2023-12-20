@@ -9,13 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ssh_class_1 = require("class/ssh.class");
-const nginx_deploy = ({ hostname, username, password, }) => __awaiter(void 0, void 0, void 0, function* () {
-    const ssh = new ssh_class_1.SSH('ma1p-amznlm1', 'atereschenko', 'Amazon123');
-    yield ssh.uploadFile({
-        source: `${__dirname}/../nginx/amznlm1/default`,
-        target: `/etc/nginx/sites-available/default`,
-    });
+exports.nginx_deploy = void 0;
+const ssh_class_1 = require("./class/ssh.class");
+const nginx_deploy = () => __awaiter(void 0, void 0, void 0, function* () {
+    const ssh = new ssh_class_1.SSH('ma1p-vit1', 'atereschenko', 'Amazon123');
+    // await ssh.uploadFile({
+    //   source: `${__dirname}/../nginx/vit1/default`,
+    //   target: `/etc/nginx/sites-available/default`,
+    // });
     yield ssh.exec('systemctl restart nginx');
     ssh.close();
 });
+exports.nginx_deploy = nginx_deploy;
+(0, exports.nginx_deploy)();

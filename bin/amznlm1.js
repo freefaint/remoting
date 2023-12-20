@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ssh_class_1 = require("class/ssh.class");
+const ssh_class_1 = require("./class/ssh.class");
 const nginx_deploy = ({ hostname, username, password, }) => __awaiter(void 0, void 0, void 0, function* () {
     const ssh = new ssh_class_1.SSH('ma1p-amznlm1', 'atereschenko', 'Amazon123');
     yield ssh.uploadFile({

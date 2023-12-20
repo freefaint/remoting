@@ -1,3 +1,3 @@
 #!/usr/bin/env node
-declare const nodePath: string, cachePath: string, command: string, params: string[];
+export {};
 //# sourceMappingURL=index.d.ts.map

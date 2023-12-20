@@ -1,4 +1,4 @@
-import { SSH } from "class/ssh.class";
+import { SSH } from "./class/ssh.class";
 
 const nginx_deploy = async ({ hostname, username, password, }: { hostname: string, username: string, password: string }) => {
   const ssh = new SSH('ma1p-amznlm1', 'atereschenko', 'Amazon123');

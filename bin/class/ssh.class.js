@@ -41,13 +41,20 @@ class SSH {
             return this;
         });
     }
+    uploadDir({ source, target, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(`Connected to ${this.hostname}`);
+            yield this.ssh.putDirectory(source, target, { recursive: true }).then(function () {
+                console.log(`Dir ${source} fynced with ${target} uploaded`);
+            });
+            return this;
+        });
+    }
     exec(cmd) {
         return __awaiter(this, void 0, void 0, function* () {
             const options = { stdin: `${this.password}\n`, execOptions: { pty: true } };
             const parts = cmd.split(/\s/);
-            return yield this.ssh.exec('sudo', parts, options).then(() => {
-                console.log("Nginx restarted");
-            });
+            return yield this.ssh.exec('sudo', parts, options).then(result => console.log(result));
         });
     }
     close() {
