@@ -54,13 +54,11 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
                 process.exit(1);
             }
             if (command === 'build') {
-                console.log(123);
                 const [profile] = params;
                 if (!profile) {
                     console.log("Specify profile!");
                     process.exit(1);
                 }
-                console.log(234);
                 const data = config.profiles[profile];
                 if (!data) {
                     console.log(`Profile ${profile} not found!`);
@@ -71,7 +69,6 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
                     console.log(`Build schema for ${profile} is not specified!`);
                     process.exit(1);
                 }
-                console.log(345);
                 try {
                     for (var _g = true, cmds_1 = __asyncValues(cmds), cmds_1_1; cmds_1_1 = yield cmds_1.next(), _a = cmds_1_1.done, !_a; _g = true) {
                         _c = cmds_1_1.value;
