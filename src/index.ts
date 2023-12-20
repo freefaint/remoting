@@ -15,7 +15,7 @@ const shell = async (command: string, ...params: string[]) => {
         process.exit(1);
       }
       
-      if (command === 'deploy') {
+      if (command === 'build') {
         const [profile] = params;
   
         if (!profile) {
