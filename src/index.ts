@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { exec } from 'node:child_process';
+import fs from "fs";
 import { SSH } from "./class/ssh.class";
 import { Hosts } from "./class/host.class";
 
@@ -13,6 +14,12 @@ const shell = async (command: string, ...params: string[]) => {
       if (!config.profiles || !Object.keys(config.profiles).length) {
         console.log("Error! Add project profile to config.json!");
         process.exit(1);
+      }
+
+      if (command === 'help') {
+        fs.readFile(`${__dirname}/../README.md`, (err, data) => {
+          console.log(data.toString());
+        });
       }
       
       if (command === 'build') {

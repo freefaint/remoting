@@ -39,8 +39,12 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_child_process_1 = require("node:child_process");
+const fs_1 = __importDefault(require("fs"));
 const ssh_class_1 = require("./class/ssh.class");
 const host_class_1 = require("./class/host.class");
 const [nodePath, cachePath, command, ...params] = process.argv;
@@ -52,6 +56,11 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
             if (!config.profiles || !Object.keys(config.profiles).length) {
                 console.log("Error! Add project profile to config.json!");
                 process.exit(1);
+            }
+            if (command === 'help') {
+                fs_1.default.readFile(`${__dirname}/../README.md`, (err, data) => {
+                    console.log(data.toString());
+                });
             }
             if (command === 'build') {
                 const [profile] = params;
