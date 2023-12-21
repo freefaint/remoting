@@ -57,12 +57,12 @@ export class SSH {
 
   public async exec(cmds: string[], opts?: SSHExecOptions) {
     const options = { ...opts, stdin: `${this.password}\n`, execOptions: { pty: true } } as any;
-    console.log(cmds);
+    
     for await (let cmd of cmds) {
       console.log('Run remote: ' + cmd);
 
       const parts = cmd.split(/\s/);
-      const promise = parts[0] === 'cd' ? this.ssh.exec('cd', parts.slice(1), options) : this.ssh.exec('sudo', parts, options)
+      const promise = this.ssh.exec(parts[0], parts.slice(1), options);
 
       await promise.then(result => console.log(result));
     }

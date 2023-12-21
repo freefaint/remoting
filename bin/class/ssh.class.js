@@ -63,7 +63,6 @@ class SSH {
         var _b, e_1, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
             const options = Object.assign(Object.assign({}, opts), { stdin: `${this.password}\n`, execOptions: { pty: true } });
-            console.log(cmds);
             try {
                 for (_a = true, cmds_1 = __asyncValues(cmds); cmds_1_1 = yield cmds_1.next(), _b = cmds_1_1.done, !_b; _a = true) {
                     _d = cmds_1_1.value;
@@ -71,7 +70,7 @@ class SSH {
                     let cmd = _d;
                     console.log('Run remote: ' + cmd);
                     const parts = cmd.split(/\s/);
-                    const promise = parts[0] === 'cd' ? this.ssh.exec('cd', parts.slice(1), options) : this.ssh.exec('sudo', parts, options);
+                    const promise = this.ssh.exec(parts[0], parts.slice(1), options);
                     yield promise.then(result => console.log(result));
                 }
             }
