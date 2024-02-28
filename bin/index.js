@@ -52,7 +52,8 @@ const hosts = new host_class_1.Hosts();
 const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         return Promise.resolve(`${`${process.cwd()}/project.json`}`).then(s => __importStar(require(s))).then(({ default: config }) => __awaiter(void 0, void 0, void 0, function* () {
-            var _a, e_1, _b, _c, _d, e_2, _e, _f;
+            var _a, e_1, _b, _c, _d, e_2, _e, _f, _g, e_3, _h, _j;
+            var _k;
             if (!config.profiles || !Object.keys(config.profiles).length) {
                 console.log("Error! Add project profile to config.json!");
                 process.exit(1);
@@ -79,9 +80,9 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
                     process.exit(1);
                 }
                 try {
-                    for (var _g = true, cmds_1 = __asyncValues(cmds), cmds_1_1; cmds_1_1 = yield cmds_1.next(), _a = cmds_1_1.done, !_a; _g = true) {
+                    for (var _l = true, cmds_1 = __asyncValues(cmds), cmds_1_1; cmds_1_1 = yield cmds_1.next(), _a = cmds_1_1.done, !_a; _l = true) {
                         _c = cmds_1_1.value;
-                        _g = false;
+                        _l = false;
                         let cmd = _c;
                         const parts = cmd.split(/\s/);
                         if (parts[0] !== 'remoting') {
@@ -106,7 +107,7 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
                 catch (e_1_1) { e_1 = { error: e_1_1 }; }
                 finally {
                     try {
-                        if (!_g && !_a && (_b = cmds_1.return)) yield _b.call(cmds_1);
+                        if (!_l && !_a && (_b = cmds_1.return)) yield _b.call(cmds_1);
                     }
                     finally { if (e_1) throw e_1.error; }
                 }
@@ -142,6 +143,39 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
                     source: data.path,
                     target: data.dir,
                 });
+                const cmds = (_k = data.deploy) !== null && _k !== void 0 ? _k : [];
+                try {
+                    for (var _m = true, cmds_2 = __asyncValues(cmds), cmds_2_1; cmds_2_1 = yield cmds_2.next(), _d = cmds_2_1.done, !_d; _m = true) {
+                        _f = cmds_2_1.value;
+                        _m = false;
+                        let cmd = _f;
+                        const parts = cmd.split(/\s/);
+                        if (parts[0] !== 'remoting') {
+                            yield new Promise((resolve, reject) => {
+                                console.log(cmd);
+                                (0, node_child_process_1.exec)(cmd, { cwd: process.cwd() }, (exception, stdout, stderr) => {
+                                    console.log(stdout);
+                                    if (exception) {
+                                        reject(stderr);
+                                    }
+                                    else {
+                                        resolve(stderr);
+                                    }
+                                });
+                            });
+                        }
+                        else {
+                            yield shell(...parts.slice(1));
+                        }
+                    }
+                }
+                catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                finally {
+                    try {
+                        if (!_m && !_d && (_e = cmds_2.return)) yield _e.call(cmds_2);
+                    }
+                    finally { if (e_2) throw e_2.error; }
+                }
                 ssh.close();
             }
             if (command === 'start') {
@@ -213,10 +247,10 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
                     process.exit(1);
                 }
                 try {
-                    for (var _h = true, cmds_2 = __asyncValues(cmds), cmds_2_1; cmds_2_1 = yield cmds_2.next(), _d = cmds_2_1.done, !_d; _h = true) {
-                        _f = cmds_2_1.value;
-                        _h = false;
-                        let cmd = _f;
+                    for (var _o = true, cmds_3 = __asyncValues(cmds), cmds_3_1; cmds_3_1 = yield cmds_3.next(), _g = cmds_3_1.done, !_g; _o = true) {
+                        _j = cmds_3_1.value;
+                        _o = false;
+                        let cmd = _j;
                         const parts = cmd.split(/\s/);
                         if (parts[0] !== 'remoting') {
                             yield new Promise((resolve, reject) => {
@@ -237,12 +271,12 @@ const shell = (command, ...params) => __awaiter(void 0, void 0, void 0, function
                         }
                     }
                 }
-                catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                catch (e_3_1) { e_3 = { error: e_3_1 }; }
                 finally {
                     try {
-                        if (!_h && !_d && (_e = cmds_2.return)) yield _e.call(cmds_2);
+                        if (!_o && !_g && (_h = cmds_3.return)) yield _h.call(cmds_3);
                     }
-                    finally { if (e_2) throw e_2.error; }
+                    finally { if (e_3) throw e_3.error; }
                 }
             }
         }));
