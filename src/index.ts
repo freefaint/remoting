@@ -111,6 +111,30 @@ const shell = async (command: string, ...params: string[]) => {
           source: data.path,
           target: data.dir,
         });
+
+        const cmds = data.deploy ?? [];
+        
+        for await (let cmd of cmds) {
+          const parts = cmd.split(/\s/);
+
+          if (parts[0] !== 'remoting') {
+            await new Promise((resolve, reject) => {
+              console.log(cmd);
+
+              exec(cmd, { cwd: process.cwd() }, (exception, stdout, stderr) => {
+                console.log(stdout);
+
+                if (exception) {
+                  reject(stderr);
+                } else {
+                  resolve(stderr);
+                }
+              });
+            })
+          } else {
+            await shell(...parts.slice(1) as [string, ...string[]]);
+          }
+        }
   
         ssh.close();
       }
