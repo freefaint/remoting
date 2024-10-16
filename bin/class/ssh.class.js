@@ -40,6 +40,9 @@ class SSH {
             const options = { stdin: `${this.password}\n`, execOptions: { pty: true } };
             const rand = (0, uuid_1.v4)();
             console.log(`Connected to ${this.hostname}`);
+            yield this.ssh.exec("mkdir", ['-p', target.split('/').slice(0, -1).join('/')], options).then(() => {
+                console.log(`Path exists`);
+            });
             yield this.ssh.putFile(source, `~/${rand}`, null).then(function () {
                 console.log(`File ${source} uploaded`);
             });
@@ -52,8 +55,11 @@ class SSH {
     uploadDir({ source, target, }) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(`Connected to ${this.hostname}`);
+            yield this.ssh.exec("mkdir", ['-p', target]).then(() => {
+                console.log(`Path exists`);
+            });
             yield this.ssh.putDirectory(source, target, { recursive: true }).then(function () {
-                console.log(`Dir ${source} fynced with ${target} uploaded`);
+                console.log(`Dir ${source} synced with ${target} uploaded`);
             });
             return this;
         });

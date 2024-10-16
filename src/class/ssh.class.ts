@@ -28,6 +28,10 @@ export class SSH {
   
     console.log(`Connected to ${this.hostname}`);
   
+    await this.ssh.exec("mkdir", ['-p', target.split('/').slice(0, -1).join('/')], options).then(() => {
+      console.log(`Path exists`);
+    });
+  
     await this.ssh.putFile(source, `~/${rand}`, null).then(function() {
       console.log(`File ${source} uploaded`);
     });
@@ -48,8 +52,12 @@ export class SSH {
   }) {
     console.log(`Connected to ${this.hostname}`);
   
+    await this.ssh.exec("mkdir", ['-p', target]).then(() => {
+      console.log(`Path exists`);
+    });
+
     await this.ssh.putDirectory(source, target, { recursive: true }).then(function() {
-      console.log(`Dir ${source} fynced with ${target} uploaded`);
+      console.log(`Dir ${source} synced with ${target} uploaded`);
     });
   
     return this;
